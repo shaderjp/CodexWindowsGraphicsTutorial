@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{16C9E62F-AAD5-4D46-A89A-6F192318F111}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>QuadTextureVulkanSample</RootNamespace>
+    <ProjectName>QuadTextureVulkanSample</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(VULKAN_SDK)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(VULKAN_SDK)\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vulkan-1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="QuadTextureVulkan.hlsl">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(VULKAN_SDK)\Bin\dxc.exe" -nologo -spirv -Tvs_6_6 -E"VSMain" "-fspv-target-env=vulkan1.2" -fvk-invert-y -Zi -Fo"$(OutDir)QuadTexture_VSMain.spv" "%(FullPath)"
+"$(VULKAN_SDK)\Bin\dxc.exe" -nologo -spirv -Tps_6_6 -E"PSMain" "-fspv-target-env=vulkan1.2" -Zi -Fo"$(OutDir)QuadTexture_PSMain.spv" "%(FullPath)"
+"$(VULKAN_SDK)\Bin\spirv-val.exe" --target-env vulkan1.2 "$(OutDir)QuadTexture_VSMain.spv"
+"$(VULKAN_SDK)\Bin\spirv-val.exe" --target-env vulkan1.2 "$(OutDir)QuadTexture_PSMain.spv"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(VULKAN_SDK)\Bin\dxc.exe" -nologo -spirv -Tvs_6_6 -E"VSMain" "-fspv-target-env=vulkan1.2" -fvk-invert-y -O3 -Fo"$(OutDir)QuadTexture_VSMain.spv" "%(FullPath)"
+"$(VULKAN_SDK)\Bin\dxc.exe" -nologo -spirv -Tps_6_6 -E"PSMain" "-fspv-target-env=vulkan1.2" -O3 -Fo"$(OutDir)QuadTexture_PSMain.spv" "%(FullPath)"
+"$(VULKAN_SDK)\Bin\spirv-val.exe" --target-env vulkan1.2 "$(OutDir)QuadTexture_VSMain.spv"
+"$(VULKAN_SDK)\Bin\spirv-val.exe" --target-env vulkan1.2 "$(OutDir)QuadTexture_PSMain.spv"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)QuadTexture_VSMain.spv;$(OutDir)QuadTexture_PSMain.spv</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)QuadTexture_VSMain.spv;$(OutDir)QuadTexture_PSMain.spv</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Identity)</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Identity)</Message>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\quad.dds">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Assets\quad.dds</TargetPath>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="EnsureVulkanSdk" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(VULKAN_SDK)' == ''" Text="VULKAN_SDK environment variable is not set." />
+    <Error Condition="!Exists('$(VULKAN_SDK)\Include\vulkan\vulkan.h')" Text="Vulkan header was not found under $(VULKAN_SDK)\Include." />
+    <Error Condition="!Exists('$(VULKAN_SDK)\Lib\vulkan-1.lib')" Text="vulkan-1.lib was not found under $(VULKAN_SDK)\Lib." />
+    <Error Condition="!Exists('$(VULKAN_SDK)\Bin\dxc.exe')" Text="Vulkan SDK dxc.exe was not found under $(VULKAN_SDK)\Bin." />
+    <Error Condition="!Exists('$(VULKAN_SDK)\Bin\spirv-val.exe')" Text="spirv-val.exe was not found under $(VULKAN_SDK)\Bin." />
+  </Target>
+</Project>

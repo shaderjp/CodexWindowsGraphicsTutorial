@@ -23,7 +23,6 @@
 *.dll
 *.so.*
 
-
 # Fortran module files
 *.mod
 *.smod
@@ -39,10 +38,17 @@
 *.out
 *.app
 
+# Shader build outputs
+*.cso
+*.spv
+
 # Build directories
 build/
 Build/
 build-*/
+bin/
+obj/
+packages/
 
 # CMake generated files
 CMakeFiles/
@@ -51,6 +57,18 @@ cmake_install.cmake
 Makefile
 install_manifest.txt
 compile_commands.json
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+*.tlog
+*.lastbuildstate
+*.idb
+*.ipdb
+*.iobj
 
 # Temporary files
 *.tmp
@@ -67,3 +85,6 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Local reference copy, not part of this tutorial repository.
+DirectX-Graphics-Samples-master/
